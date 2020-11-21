@@ -8,6 +8,9 @@ export const dataTree = {
       props: {
         title: '我是header',
       },
+      context: {
+        debug: true
+      }
     },
     {
       type: 'row',

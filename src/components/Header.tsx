@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const Header: FC<{
   title: string;
 } & React.HTMLAttributes<HTMLHeadingElement>> = ({ title, ...props }) => {
-  console.log('Header.tsx:6', 'collect');
+  console.log('Header.tsx:6', 'render');
   return <H1 {...props}>{title}</H1>;
 };
 

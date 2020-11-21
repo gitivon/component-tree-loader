@@ -3,7 +3,7 @@ import { Row, Col, Button } from 'antd';
 import { ComponentType } from 'react';
 import { Root } from '@/components/Root';
 import { Plain } from '@/components/Plain';
-import { MapNodeTypeProps } from './Node';
+import { MapNodeTypeProps } from './Node/Node';
 
 export const mapNodeTypes: MapNodeTypeProps = {
   root: Root,

@@ -6,5 +6,6 @@ interface PlainProp {
 export const Plain: FC<PlainProp> = ({
   content
 }) => {
+  console.log('Plain.tsx:8', 'render');
   return <>{content}</>;
 }
