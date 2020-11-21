@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 
 const levelColors = [
-  'red', 'blue', 'green', 'yellow',
-  'red', 'blue', 'green', 'yellow',
-  'red', 'blue', 'green', 'yellow'
+  'red', 'blue', 'green', '#078e9c',
+  'red', 'blue', 'green', '#078e9c',
+  'red', 'blue', 'green', '#078e9c'
 ];
 interface SNodeProp {
   level: number;

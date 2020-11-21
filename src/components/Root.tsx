@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
+import { useNode } from '@/core/Node/RootCtx';
 
 export const Root: FC = ({
   children
 }) => {
-  console.log('Root.tsx:5', 'render');
   return <>
     Root
     {children}

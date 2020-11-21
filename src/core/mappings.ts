@@ -1,9 +1,14 @@
 import { Header } from '@/components/Header';
-import { Row, Col, Button } from 'antd';
-import { ComponentType } from 'react';
-import { Root } from '@/components/Root';
 import { Plain } from '@/components/Plain';
+import { Root } from '@/components/Root';
+import { Child, Parent } from '@/components/test/Parent';
+import { Button, Col, Row } from 'antd';
 import { MapNodeTypeProps } from './Node/Node';
+
+const testMappings: MapNodeTypeProps = {
+  parent: Parent,
+  child: Child,
+}
 
 export const mapNodeTypes: MapNodeTypeProps = {
   root: Root,
@@ -12,4 +17,5 @@ export const mapNodeTypes: MapNodeTypeProps = {
   col: Col,
   button: Button,
   plain: Plain,
+  ...testMappings,
 }

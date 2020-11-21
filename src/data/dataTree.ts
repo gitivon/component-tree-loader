@@ -1,7 +1,11 @@
+import { NodeDataProps } from '@/core/Node';
+import { Input, Button } from 'antd';
+import { mapNodeTypes } from '@/core/mappings';
 
-export const dataTree = {
+export const dataTree: NodeDataProps = {
   type: 'root',
   props: {},
+  context: {},
   children: [
     {
       type: 'header',
@@ -9,8 +13,33 @@ export const dataTree = {
         title: '我是header',
       },
       context: {
-        debug: true
-      }
+        strict: false,
+        mapNodeTypes: {
+          ...mapNodeTypes,
+          button: Input,
+        },
+      },
+      children: [
+        {
+          type: 'button',
+          props: {},
+        },
+        {
+          type: 'input',
+          props: {
+            type: 'primary',
+          },
+          children: [
+            {
+              type: 'header',
+              context: {},
+              props: {
+                title: 'input的纯文本',
+              },
+            },
+          ],
+        },
+      ],
     },
     {
       type: 'row',
@@ -21,26 +50,56 @@ export const dataTree = {
         {
           type: 'col',
           props: {
-            span: 6,
+            span: 12,
           },
           children: [
             {
               type: 'button',
               props: {
-                type: 'primary'
+                type: 'primary',
               },
               children: [
                 {
                   type: 'plain',
+                  context: {},
                   props: {
-                    content: '我是文本'
-                  }
+                    content: '我是文本',
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'col',
+          props: {
+            span: 12,
+          },
+          children: [
+            {
+              type: 'parent',
+              props: {},
+              context: {
+                // debug: true,
+              },
+              children: [
+                {
+                  type: 'child',
+                  props: {
+                    value: '123'
+                  },
+                },
+                {
+                  type: 'child',
+                  props: {
+                    value: '456'
+                  },
                 }
               ]
             }
           ]
         }
-      ]
-    }
-  ]
-}
+      ],
+    },
+  ],
+};
