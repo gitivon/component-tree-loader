@@ -1,32 +1,51 @@
-import { useState, useReducer, Reducer } from 'react';
-import { NodeDataProps } from '../core/Node';
-import { dataTree } from '@/data/dataTree';
+import { useCallback, useState } from 'react';
+import { set, get } from 'lodash';
 
-export enum DataTreeActionType {
-  UPDATE,
-}
-interface DataTreeAction {
-  type: DataTreeActionType;
-  payload?: NodeDataProps;
-  [key: string]: any;
-}
-const reducer: Reducer<NodeDataProps, DataTreeAction> = (state, action) => {
-  const { type, payload } = action;
-  switch(type) {
-    case DataTreeActionType.UPDATE:
-      const v = state.children?.[1]?.children?.[1]?.children?.[0]?.children?.[1];
-      if (v) {
-        v.props.value = action.value;
-      }
-      console.log('useDataTree.ts:17', state);
-      return {...state};
-  }
-}
-
-export default function useDataTree(initialState: NodeDataProps) {
-  const [data, dispatch] = useReducer(reducer, dataTree);
+const initial = {
+  type: 'root',
+  props: {},
+  children: [
+    {
+      type: 'parent',
+      props: {},
+      children: [
+        {
+          type: 'child',
+          props: {
+            value: '123',
+          },
+        },
+        {
+          type: 'child',
+          props: {
+            value: '456',
+          },
+          children: [
+            {
+              type: 'header',
+              props: {
+                title: '撒子?',
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+export default function useDataTree() {
+  const [data, setData] = useState(initial);
+  const dispatch = useCallback((target: any, path: string, value: any) => {
+    const item = get(data, target);
+    set(item, path, value);
+    console.log('useDataTree.ts:40', item, value);
+    set(data, target, { ...item });
+    setData({ ...data });
+  }, []);
   return {
     dataTree: data,
     dispatch,
-  }
+  };
 }
+
+// TODO: 优化策略：记录下 dispatch 时候的 path，对比context中的 path 记录，如果 match 得上就更更新，否则不更新

@@ -1,34 +1,33 @@
-import React, { FC } from 'react';
-import { Input, Button } from 'antd';
+import { Button, Input } from 'antd';
+import React, { FC, memo } from 'react';
 import { useModel } from 'umi';
-import { DataTreeActionType } from '@/models/useDataTree'
 
-export const Parent: FC = ({
-  children
-}) => {
-  
-  return <>
-    parent
-    {children}
-  </>;
+export const Parent: FC = ({ children }) => {
+  console.log('Parent.tsx:8', 'render');
+  return (
+    <>
+      parent
+      {children}
+    </>
+  );
 }
 
 interface ChildProp {
   value: string;
   dispatch: any;
 }
-export const Child: FC<ChildProp> = ({
-  value,
-}) => {
+export const Child: FC<ChildProp> = ({ value, children }) => {
   console.log('Child.tsx:19', 'render', value);
   const { dispatch } = useModel('useDataTree', m => ({
-    dispatch: m.dispatch
+    dispatch: m.dispatch,
   }));
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: DataTreeActionType.UPDATE, value: e.target.value })
-  }
-  return <>
-    <Button>点我</Button>
-    <Input placeholder="请输入" value={value} onChange={handleChange} />
-  </>
-}
+    dispatch('children[0].children[1]', 'props.value', e.target.value);
+  };
+  return (
+    <>
+      <Input placeholder="请输入" value={value} onChange={handleChange} />
+      {children}
+    </>
+  );
+};

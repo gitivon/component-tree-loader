@@ -1,4 +1,4 @@
-import React, { ComponentType, createElement, FC, useMemo } from 'react';
+import React, { ComponentType, createElement, FC, useMemo, useEffect, memo } from 'react';
 import { DebugNode } from './Debug';
 import { NodeCtxProps, NodeItem, useNode } from './RootCtx';
 
@@ -36,13 +36,15 @@ export const Node: FC<NodeProps> = ({
     mapNodeTypes,
     ...context,
   };
-  if (nodeItemProps.debug) {
-    console.log(`[debug][${data.type}]`, {
-      context: nodeItemProps,
-      data,
-      inherit,
-    });
-  }
+  useEffect(() => {
+    if (nodeItemProps.debug) {
+      console.log(`[debug][${data.type}]`, {
+        context: nodeItemProps,
+        data,
+        inherit,
+      });
+    }
+  }, [data])
   const dataChildren = children.map((child, index) => {
     return <Node data={child} level={level + 1} key={index} />;
   });
@@ -57,6 +59,7 @@ export const Node: FC<NodeProps> = ({
   } else {
     Component = mapNodeTypes[type];
   }
+  // const child = useMemo(() => createElement(Component, props, ...dataChildren), [data]);
   const child = createElement(Component, props, ...dataChildren);
   return (
     <NodeItem
