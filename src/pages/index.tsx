@@ -10,7 +10,7 @@ const App: FC = () => {
   return (
     <RootNode mapNodeTypes={mapNodeTypes}>
       <GlobalStyled />
-      <Node data={dataTree} />
+      <Node data={dataTree} path={[]} />
     </RootNode>
   );
 };

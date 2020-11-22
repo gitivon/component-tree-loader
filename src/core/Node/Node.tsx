@@ -17,11 +17,13 @@ export interface NodeProps {
   data: NodeDataProps;
   level?: number;
   mapNodeTypes?: MapNodeTypeProps;
+  path: (string | number)[];
 }
 export const Node: FC<NodeProps> = ({
   children: ownerChildren,
   data,
   level = 0,
+  path,
 }) => {
   const {
     debug,
@@ -46,7 +48,8 @@ export const Node: FC<NodeProps> = ({
     }
   }, [data])
   const dataChildren = children.map((child, index) => {
-    return <Node data={child} level={level + 1} key={index} />;
+    const nextPath = path.concat('children', index);
+    return <Node data={child} path={nextPath} level={level + 1} key={index} />;
   });
   let Component: ComponentType<any>;
   if (!(type in mapNodeTypes)) {
@@ -59,7 +62,6 @@ export const Node: FC<NodeProps> = ({
   } else {
     Component = mapNodeTypes[type];
   }
-  // const child = useMemo(() => createElement(Component, props, ...dataChildren), [data]);
   const child = createElement(Component, props, ...dataChildren);
   return (
     <NodeItem
@@ -67,6 +69,7 @@ export const Node: FC<NodeProps> = ({
       inherit={inherit}
       {...restCtxProps}
       {...nodeItemProps}
+      path={path}
     >
       {nodeItemProps.debug ? (
         <DebugNode level={level}>{child}</DebugNode>

@@ -15,6 +15,7 @@ export interface NodeCtxProps {
   strict: boolean;
   mapNodeTypes: MapNodeTypeProps;
   mapNodePropName: MapTreeNodeProps;
+  path: (string | number)[];
   index?: number;
 }
 
@@ -50,5 +51,5 @@ export const RootNode: FC<RootNodeProps> = ({ children, ...props }) => {
     mapNodePropName: defaultMapTreeNodeProps,
     ...props,
   };
-  return <NodeItem {...rootCtx}>{children}</NodeItem>;
+  return <NodeItem path={[]} {...rootCtx}>{children}</NodeItem>;
 };

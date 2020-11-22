@@ -1,9 +1,9 @@
-import React, { FC, memo } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 
 export const Header: FC<{
   title: string;
-} & React.HTMLAttributes<HTMLHeadingElement>> = memo(({
+}> = ({
   title,
   children,
   ...props
@@ -15,9 +15,7 @@ export const Header: FC<{
       {children}
     </>
   );
-}, (prev, next) => {
-  return prev.title === next.title;
-});
+};
 
 const H1 = styled.h1`
   margin: 10px 0;

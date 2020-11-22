@@ -1,16 +1,19 @@
 import { Button, Input } from 'antd';
-import React, { FC, memo } from 'react';
-import { useModel } from 'umi';
+import React, { FC } from 'react';
+import useNodeState from '@/core/useNodeState';
 
-export const Parent: FC = ({ children }) => {
+export const Parent: FC<{
+  text: string;
+}> = ({ children, text='点我' }) => {
   console.log('Parent.tsx:8', 'render');
   return (
     <>
+      <Button>{text}</Button>
       parent
       {children}
     </>
   );
-}
+};
 
 interface ChildProp {
   value: string;
@@ -18,11 +21,9 @@ interface ChildProp {
 }
 export const Child: FC<ChildProp> = ({ value, children }) => {
   console.log('Child.tsx:19', 'render', value);
-  const { dispatch } = useModel('useDataTree', m => ({
-    dispatch: m.dispatch,
-  }));
+  const { set } = useNodeState();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch('children[0].children[1]', 'props.value', e.target.value);
+    set('props.value', e.target.value);
   };
   return (
     <>
