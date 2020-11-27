@@ -1,4 +1,11 @@
-import React, { ComponentType, createElement, FC, useMemo, useEffect, memo } from 'react';
+import React, {
+  ComponentType,
+  createElement,
+  FC,
+  useMemo,
+  useEffect,
+  memo,
+} from 'react';
 import { DebugNode } from './Debug';
 import { NodeCtxProps, NodeItem, useNode } from './RootCtx';
 
@@ -25,13 +32,14 @@ export const Node: FC<NodeProps> = ({
   level = 0,
   path,
 }) => {
+  const nodeCtxProps = useNode();
   const {
     debug,
     mapNodeTypes,
     strict,
     inherit,
     ...restCtxProps
-  } = useNode();
+  } = nodeCtxProps;
   const { type, props, context, children = [] } = data;
   const nodeItemProps = {
     debug,
@@ -46,7 +54,7 @@ export const Node: FC<NodeProps> = ({
         inherit,
       });
     }
-  }, [data])
+  }, [data]);
   const dataChildren = children.map((child, index) => {
     const nextPath = path.concat('children', index);
     return <Node data={child} path={nextPath} level={level + 1} key={index} />;
@@ -58,19 +66,13 @@ export const Node: FC<NodeProps> = ({
     } else {
       console.log(`%c没有找到对应的组件: ${type}`, 'color: red');
     }
-    Component = DefaultComponent;
+    Component = restCtxProps.fallbackNode;
   } else {
     Component = mapNodeTypes[type];
   }
   const child = createElement(Component, props, ...dataChildren);
   return (
-    <NodeItem
-      strict={strict}
-      inherit={inherit}
-      {...restCtxProps}
-      {...nodeItemProps}
-      path={path}
-    >
+    <NodeItem {...nodeCtxProps} {...nodeItemProps} path={path}>
       {nodeItemProps.debug ? (
         <DebugNode level={level}>{child}</DebugNode>
       ) : (
@@ -78,8 +80,4 @@ export const Node: FC<NodeProps> = ({
       )}
     </NodeItem>
   );
-};
-
-const DefaultComponent: FC = ({ children }) => {
-  return <>{children}</>;
 };

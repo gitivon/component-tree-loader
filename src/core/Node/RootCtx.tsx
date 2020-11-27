@@ -1,5 +1,9 @@
-import React, { createContext, FC, useContext } from 'react';
-import { MapNodeTypeProps } from './Node';
+import React, { ComponentType, createContext, FC, useContext } from 'react';
+import { MapNodeTypeProps, Node, NodeDataProps } from './Node';
+
+const DefaultFallbackComponent: FC = ({ children }) => {
+  return <>{children}</>;
+};
 
 // dataTree 的字段映射类型
 export interface MapTreeNodeProps {
@@ -11,6 +15,7 @@ export interface MapTreeNodeProps {
 
 export interface NodeCtxProps {
   debug: boolean;
+  fallbackNode: ComponentType<any>;
   inherit: boolean;
   strict: boolean;
   mapNodeTypes: MapNodeTypeProps;
@@ -42,14 +47,20 @@ const defaultMapTreeNodeProps: MapTreeNodeProps = {
 
 interface RootNodeProps extends Omit<Partial<NodeCtxProps>, 'mapNodeTypes'> {
   mapNodeTypes: MapNodeTypeProps;
+  data: NodeDataProps;
 }
-export const RootNode: FC<RootNodeProps> = ({ children, ...props }) => {
+export const RootNode: FC<RootNodeProps> = ({ children, data, ...props }) => {
   const rootCtx = {
     debug: false,
     strict: false,
     inherit: true,
+    fallbackNode: DefaultFallbackComponent,
     mapNodePropName: defaultMapTreeNodeProps,
     ...props,
   };
-  return <NodeItem path={[]} {...rootCtx}>{children}</NodeItem>;
+  return (
+    <NodeItem path={[]} {...rootCtx}>
+      <Node data={data} path={[]} />
+    </NodeItem>
+  );
 };

@@ -8,10 +8,10 @@ import { useModel } from 'umi';
 const App: FC = () => {
   const { dataTree, dispatch } = useModel('useDataTree');
   return (
-    <RootNode mapNodeTypes={mapNodeTypes}>
+    <>
       <GlobalStyled />
-      <Node data={dataTree} path={[]} />
-    </RootNode>
+      <RootNode mapNodeTypes={mapNodeTypes} data={dataTree} />
+    </>
   );
 };
 

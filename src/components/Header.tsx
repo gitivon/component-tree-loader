@@ -3,15 +3,11 @@ import styled from 'styled-components';
 
 export const Header: FC<{
   title: string;
-}> = ({
-  title,
-  children,
-  ...props
-}) => {
+}> = ({ title, children, ...props }) => {
   console.log('Header.tsx:10', 'render');
   return (
     <>
-      <H1 {...props}>{title}</H1>
+      <H1 {...props}>[H1]: {title}</H1>
       {children}
     </>
   );
