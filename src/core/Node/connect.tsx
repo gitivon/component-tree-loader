@@ -1,7 +1,13 @@
-import React, { ComponentType, useMemo, useCallback, useEffect } from 'react';
 import useDataTree from '@/models/useDataTree';
-import { useNode } from './RootCtx';
+import React, {
+  ComponentType,
+  useCallback,
+  useMemo,
+  createElement,
+  PropsWithChildren,
+} from 'react';
 import { useModel } from 'umi';
+import { useNode } from './RootCtx';
 
 const getPath = (path: (string | number)[]) => {
   return path.reduce((prev, current) => {
@@ -19,20 +25,36 @@ interface ConnectInjectedProps {
 
 export const connect = <P,>(
   WrappedComponent: ComponentType<P & ConnectInjectedProps>,
-) => (props: P & ConnectInjectedProps) => {
-  const [data, dispatch] = useModel('useDataTree');
+) => ({ children, ...props }: PropsWithChildren<P & ConnectInjectedProps>) => {
+  const [data, updateData] = useModel('useDataTree');
   const { path } = useNode();
-  path.push('props');
-  const setState = useCallback(
-    (nextState: P) => {
-      const next = data.setIn(path, nextState);
-      dispatch(next);
+  const dispatch = useCallback(
+    (nextState: any) => {
+      updateData(draft => {
+        path.forEach(name => {
+          // @ts-ignore
+          draft = draft[name];
+        });
+        draft.props = nextState;
+      });
     },
-    [getPath(path), data],
+    [getPath(path)],
   );
-  const nextProps = data.getIn(path);
+  let nextProps = data as any;
+  path.concat(['props']).forEach(name => {
+    // @ts-ignore
+    nextProps = nextProps[name];
+  });
   return useMemo(
-    () => <WrappedComponent {...nextProps} dispatch={setState} />,
+    () =>
+      createElement(
+        WrappedComponent,
+        {
+          ...nextProps,
+          dispatch,
+        },
+        children,
+      ),
     [nextProps],
   );
 };

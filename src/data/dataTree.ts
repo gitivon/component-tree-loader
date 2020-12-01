@@ -16,13 +16,24 @@ export const dataTree: NodeDataProps = {
         strict: false,
         mapNodeTypes: {
           ...mapNodeTypes,
-          button: Input,
+          // button: Input,
         },
       },
       children: [
         {
           type: 'button',
-          props: {},
+          props: {
+            type: 'primary',
+          },
+          children: [
+            {
+              type: 'plain',
+              context: {},
+              props: {
+                content: '我是文本222',
+              },
+            },
+          ],
         },
         {
           type: 'input',
@@ -86,19 +97,27 @@ export const dataTree: NodeDataProps = {
                 {
                   type: 'child',
                   props: {
-                    value: '123'
+                    value: '123',
                   },
                 },
                 {
                   type: 'child',
                   props: {
-                    value: '456'
+                    value: '456',
                   },
-                }
-              ]
-            }
-          ]
-        }
+                  children: [
+                    {
+                      type: 'plain',
+                      props: {
+                        content: '111',
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
       ],
     },
   ],

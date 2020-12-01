@@ -1,6 +1,5 @@
-import { get, set } from 'lodash';
-import { useCallback, useState } from 'react';
-import Immutable from 'seamless-immutable';
+import { useImmer } from 'use-immer';
+import { dataTree } from '@/data/dataTree';
 
 const initial = {
   type: 'root',
@@ -35,5 +34,5 @@ const initial = {
   ],
 };
 export default function useDataTree() {
-  return useState(Immutable(initial));
+  return useImmer(dataTree);
 }

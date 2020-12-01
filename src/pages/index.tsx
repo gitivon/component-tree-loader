@@ -7,9 +7,6 @@ import { useModel } from 'umi';
 
 const App: FC = () => {
   const [dataTree, dispatch] = useModel('useDataTree');
-  useEffect(() => {
-    console.log('index.tsx:10', 'root change');
-  }, [dataTree]);
   return (
     <>
       <GlobalStyled />
